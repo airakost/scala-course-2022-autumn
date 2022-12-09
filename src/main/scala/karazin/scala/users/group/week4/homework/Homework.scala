@@ -35,78 +35,56 @@ object Homework:
 
     infix def contains(x: Int): Boolean = false
 
-    infix def remove(x: Int): IntSet = Empty
-
+    infix def remove(x: Int): IntSet = ???
+    
     @targetName("union")
-    infix def ∪(that: IntSet): IntSet = that
+    infix def ∪(that: IntSet): IntSet = ???
 
     @targetName("intersection")
-    infix def ∩(that: IntSet): IntSet = this
+    infix def ∩(that: IntSet): IntSet = ???
 
     @targetName("complement")
-    infix def ∖(that: IntSet): IntSet = this
+    infix def ∖(that: IntSet): IntSet = ???
 
     @targetName("disjunctive union")
-    infix def ∆(that: IntSet): IntSet = that
-
-    override def toString: String = "[*]"
-
-    override def equals(other: Any): Boolean = other match {
-      case empty: Empty => true
-      case _ => false
-    }
+    infix def ∆(that: IntSet): IntSet = ???
+    
+    override def toString: String = "[*]"    
+    
+    override def equals(other: Any): Boolean = ???    
 
   end Empty
-
+    
   case class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet:
 
-    infix def include(x: Int): IntSet =
+    infix def include(x: Int): IntSet = 
       if x < elem       then NonEmpty(elem, left include x, right)
       else if x > elem  then NonEmpty(elem, left, right include x)
       else              this
 
-    infix def contains(x: Int): Boolean =
+    infix def contains(x: Int): Boolean = 
       if x < elem       then left contains x
       else if x > elem  then right contains x
       else              true
 
     // Optional task
-    infix def remove(x: Int): IntSet =
-      if x < elem then NonEmpty(elem, left remove x, right)
-      else if x > elem then NonEmpty(elem, left, right remove x)
-      else left ∪ right
+    infix def remove(x: Int): IntSet = ???
 
     @targetName("union")
-    infix def ∪(that: IntSet): IntSet =
-      (left ∪ (right ∪ that)) include elem
+    infix def ∪(that: IntSet): IntSet = ???
 
     @targetName("intersection")
-    infix def ∩(that: IntSet): IntSet =
-      val intersectionResult = (left ∩ that) ∪ (right ∩ that)
-
-      if that contains elem
-        then intersectionResult include elem
-      else intersectionResult
+    infix def ∩(that: IntSet): IntSet = ???
 
     @targetName("complement")
-    infix def ∖(that: IntSet): IntSet =
-      val complementResult = (left ∖ that) ∪ (right ∖ that)
-
-      if that contains elem
-        then  complementResult
-      else complementResult include elem
+    infix def ∖(that: IntSet): IntSet = ???
 
     @targetName("disjunctive union")
-    infix def ∆(that: IntSet): IntSet =
-      (this ∖ that) ∪ (that ∖ this)
-
-    override def toString: String = s"[$left - [$elem] - $right]"
-
-    override def equals(other: Any): Boolean = other match {
-      case empty: Empty => false
-      case nonEmpty: NonEmpty => (this ∖ nonEmpty).equals(Empty)
-      case _ => false
-    }
+    infix def ∆(that: IntSet): IntSet = ???
+    
+    override def toString: String = s"[$left - [$elem] - $right]"    
+    
+    override def equals(other: Any): Boolean = ???
 
   end NonEmpty
 
