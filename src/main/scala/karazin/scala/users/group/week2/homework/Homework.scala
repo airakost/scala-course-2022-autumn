@@ -1,6 +1,7 @@
 package karazin.scala.users.group.week2.homework
 
 import scala.annotation.targetName
+import scala.language.postfixOps
 import scala.math.{abs, signum}
 
 object Homework:
@@ -34,19 +35,33 @@ object Homework:
       !(this < that)
 
     @targetName("addition")
-    infix def +(that: Rational): Rational = ???
+    infix def +(that: Rational): Rational = {
+      Rational(that.numer * this.denom + that.denom * this.numer, that.denom * this.denom)
+    }
 
     @targetName("negation")
-    infix def unary_- : Rational = ???
+    infix def unary_- : Rational = {
+      Rational(-this.numer, this.denom)
+    }
 
     @targetName("substraction")
-    infix def -(that: Rational): Rational = ???
+    infix def -(that: Rational): Rational = {
+      Rational(that.denom * this.numer - that.numer * this.denom, that.denom * this.denom)
+    }
 
     @targetName("multiplication")
-    infix def *(that: Rational): Rational = ???
+    infix def *(that: Rational): Rational = {
+      Rational(that.numer * this.numer, that.denom * this.denom)
+    }
 
-    @targetName("devision")
-    infix def /(that: Rational): Rational = ???
+    @targetName("division")
+    infix def /(that: Rational): Rational = {
+      // if numer is 0 -> then return null
+      if that.numer == 0
+        then throw IllegalArgumentException("Division by zero is not allowed")
+      else
+        Rational(that.numer * this.denom, that.denom * this.numer)
+    }
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
@@ -55,7 +70,19 @@ object Homework:
 
     private lazy val g = gcd(abs(x), y)
 
-    override def equals(other: Any): Boolean = ???
+    override def equals(other: Any): Boolean = other match {
+      case that: Rational =>
+          (denom == that.denom) &&
+          (that.isInstanceOf[Rational]) &&
+          (g == that.g) &&
+          (numer == that.numer)
+      case _              => false
+    }
+
+    override def hashCode(): Int = {
+      val prime = 41
+      prime * (prime + numer.hashCode()) + denom.hashCode()
+    }
 
   end Rational
 
